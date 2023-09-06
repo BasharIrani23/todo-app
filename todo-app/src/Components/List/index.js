@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Pagination } from "@mantine/core";
-import { settingsContext } from "../../Context/Setting";
+import { SettingsContext } from "../../Context/Setting/index";
+
 import "./list.scss";
 
 const ListItem = ({ item, toggleComplete }) => (
-    <article className="list-item" key={item.id}>
+    <article className="list-item">
         <p>{item.text}</p>
         <p>
             <small>Assigned to: {item.assignee}</small>
@@ -20,17 +21,20 @@ const ListItem = ({ item, toggleComplete }) => (
         </div>
     </article>
 );
-export default function List({ list, toggleComplete }) {
-    const { itemsPerPage, currentPage, setCurrentPage } =
-        useContext(settingsContext);
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+export default function List({ list, toggleComplete }) {
+    const { itemsPerPage, hideCompleted, currentPage, setCurrentPage } =
+        useContext(SettingsContext);
 
     const sortedList = list.sort((a, b) =>
         a.difficulty > b.difficulty ? 1 : -1
     );
-    const itemsToDisplay = sortedList.slice(startIndex, endIndex);
+    const filteredList = hideCompleted
+        ? sortedList.filter((item) => !item.complete)
+        : sortedList;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const itemsToDisplay = filteredList.slice(startIndex, endIndex);
 
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
@@ -39,12 +43,16 @@ export default function List({ list, toggleComplete }) {
     return (
         <section className="list">
             {itemsToDisplay.map((item) => (
-                <ListItem item={item} toggleComplete={toggleComplete} />
+                <ListItem
+                    key={item.id}
+                    item={item}
+                    toggleComplete={toggleComplete}
+                />
             ))}
 
-            {list.length > itemsPerPage && (
+            {filteredList.length > itemsPerPage && (
                 <Pagination
-                    total={Math.ceil(list.length / itemsPerPage)}
+                    total={Math.ceil(filteredList.length / itemsPerPage)}
                     value={currentPage}
                     onChange={handlePageChange}
                     position="center"

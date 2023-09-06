@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import useForm from "../../hooks/form.js";
 import { v4 as uuid } from "uuid";
-import { settingsContext } from "../../Context/Setting";
+import { SettingsContext } from "../../Context/Setting/index";
+
 import List from "../List/index.js";
 
 const InputField = ({ name, type, placeholder, value, onChange }) => (
@@ -19,7 +20,7 @@ const InputField = ({ name, type, placeholder, value, onChange }) => (
 
 const Todo = () => {
     const { list, setList, incomplete, setIncomplete } =
-        useContext(settingsContext);
+        useContext(SettingsContext);
 
     const [defaultValues] = useState({
         difficulty: 4,
