@@ -10,31 +10,25 @@ const useForm = (callback, defaultValues = {}) => {
     };
 
     const handleChange = (event) => {
-        let name, value;
-        if (typeof event === "object") {
-            name = event.target.name;
-            value = event.target.value;
-        } else {
-            console.log("event from slider", event);
+        const { name, value: eventValue } = event.target;
+        const parsedValue = parseInt(eventValue, 10);
+        const value = isNaN(parsedValue) ? eventValue : parsedValue;
 
-            name = sort;
-            value = event;
-        }
+        setValues((prevValues) => ({ ...prevValues, [name]: value }));
+    };
 
-        if (parseInt(value)) {
-            value = parseInt(value);
-        }
-
-        setValues((values) => ({ ...values, [name]: value }));
+    const handleSliderChange = (value) => {
+        setValues((prevValues) => ({ ...prevValues, [sort]: value }));
     };
 
     useEffect(() => {
         setValues(defaultValues);
-    }, [defaultValues]);
+    }, [defaultValues, setValues]);
 
     return {
         handleChange,
         handleSubmit,
+        handleSliderChange,
         values,
     };
 };

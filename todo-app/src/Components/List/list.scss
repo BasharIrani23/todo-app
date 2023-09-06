@@ -1,0 +1,38 @@
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 0 1rem 0;
+}
+
+.list-item {
+    width: 100%;
+    margin: 0 0 1rem 0;
+    padding: 1rem;
+    border: 1px solid #456;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: rgba(68, 102, 153, 0.1);
+    }
+
+    p {
+        margin: 0;
+        line-height: 1.4;
+        font-weight: 500;
+
+        &:nth-child(2),
+        &:nth-child(3) {
+            margin-top: 0.5rem;
+            font-weight: 400;
+        }
+
+        small {
+            color: #888;
+        }
+
+        .completed {
+            color: #456;
+        }
+    }
+}

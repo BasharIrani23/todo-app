@@ -4,6 +4,19 @@ import { v4 as uuid } from "uuid";
 import { settingsContext } from "../../Context/Setting";
 import List from "../List/index.js";
 
+const InputField = ({ name, type, placeholder, value, onChange }) => (
+    <label className="input-label">
+        <span>{placeholder}</span>
+        <input
+            onChange={onChange}
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+        />
+    </label>
+);
+
 const Todo = () => {
     const { list, setList, incomplete, setIncomplete } =
         useContext(settingsContext);
@@ -15,9 +28,12 @@ const Todo = () => {
     const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
     function addItem(item) {
+        if (!item.text || !item.assignee) {
+            alert("Both text and assignee fields are required.");
+            return;
+        }
         item.id = uuid();
         item.complete = false;
-        console.log(item);
         setList([...list, item]);
     }
 
@@ -35,47 +51,44 @@ const Todo = () => {
         });
 
         setList(items);
-        deleteItem(id);
     }
 
     useEffect(() => {
+        updateIncompleteCountAndTitle();
+    }, [list]);
+
+    const updateIncompleteCountAndTitle = () => {
         let incompleteCount = list.filter((item) => !item.complete).length;
         setIncomplete(incompleteCount);
         document.title = `To Do List: ${incomplete}`;
-    }, [list]);
+    };
 
     return (
-        <>
+        <div className="todo-container">
             <header data-testid="todo-header">
                 <h1 data-testid="todo-h1">
                     To Do List: {incomplete} items pending
                 </h1>
             </header>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="todo-form">
                 <h2>Add To Do Item</h2>
 
-                <label>
-                    <span>To Do Item</span>
-                    <input
-                        onChange={handleChange}
-                        name="text"
-                        type="text"
-                        placeholder="Item Details"
-                    />
-                </label>
+                <InputField
+                    name="text"
+                    type="text"
+                    placeholder="Item Details"
+                    onChange={handleChange}
+                />
 
-                <label>
-                    <span>Assigned To</span>
-                    <input
-                        onChange={handleChange}
-                        name="assignee"
-                        type="text"
-                        placeholder="Assignee Name"
-                    />
-                </label>
+                <InputField
+                    name="assignee"
+                    type="text"
+                    placeholder="Assignee Name"
+                    onChange={handleChange}
+                />
 
-                <label>
+                <label className="input-label">
                     <span>Difficulty</span>
                     <input
                         onChange={handleChange}
@@ -87,13 +100,13 @@ const Todo = () => {
                     />
                 </label>
 
-                <label>
+                <div className="submit-button">
                     <button type="submit">Add Item</button>
-                </label>
+                </div>
             </form>
 
-            <List list={list} toggleComplete={toggleComplete}></List>
-        </>
+            <List list={list} toggleComplete={toggleComplete} />
+        </div>
     );
 };
 
