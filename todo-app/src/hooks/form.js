@@ -1,8 +1,9 @@
 import { useEffect, useContext } from "react";
-import { settingsContext } from "../Context/Setting";
+import { SettingsContext } from "../Context/Setting/index";
 
 const useForm = (callback, defaultValues = {}) => {
-    const { setValues, values, sort } = useContext(settingsContext);
+    // Replace 'sort' with 'sortField'
+    const { setValues, values, sortField } = useContext(SettingsContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -18,7 +19,7 @@ const useForm = (callback, defaultValues = {}) => {
     };
 
     const handleSliderChange = (value) => {
-        setValues((prevValues) => ({ ...prevValues, [sort]: value }));
+        setValues((prevValues) => ({ ...prevValues, [sortField]: value }));
     };
 
     useEffect(() => {
