@@ -7,39 +7,52 @@ import SettingsForm from "./Components/SettingsForm/index";
 import Todo from "./Components/Todo";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Login from "./Components/Login/index";
+import Auth from "./Components/Auth/index";
 
 // Context
 import { SettingsProvider } from "./Context/Setting/index";
+import { AuthProvider } from "./Context/Auth/index";
 
 function App() {
     return (
-        <MantineProvider withGlobalStyles withNormalizeCSS>
-            <SettingsProvider>
-                <Router>
-                    <Header />
-                    <nav style={navStyle}>
-                        <Link style={linkStyle} to="/">
-                            Home
-                        </Link>
-                        <Link style={linkStyle} to="/settings">
-                            Settings
-                        </Link>
-                    </nav>
+        <AuthProvider>
+            <MantineProvider withGlobalStyles withNormalizeCSS>
+                <SettingsProvider>
+                    <Router>
+                        <Header />
+                        <nav style={navStyle}>
+                            <Link style={linkStyle} to="/">
+                                Home
+                            </Link>
+                            <Link style={linkStyle} to="/settings">
+                                Settings
+                            </Link>
+                            <Link style={linkStyle} to="/login">
+                                Login
+                            </Link>
+                        </nav>
 
-                    <main style={mainContentStyle}>
-                        <Routes>
-                            <Route path="/" element={<Todo />} />
-                            <Route
-                                path="/settings"
-                                element={<SettingsForm />}
-                            />
-                        </Routes>
-                    </main>
+                        <main style={mainContentStyle}>
+                            <Routes>
+                                <Route path="/" element={<Todo />} />
+                                <Route
+                                    path="/settings"
+                                    element={
+                                        <Auth capability="read">
+                                            <SettingsForm />
+                                        </Auth>
+                                    }
+                                />
+                                <Route path="/login" element={<Login />} />
+                            </Routes>
+                        </main>
 
-                    <Footer />
-                </Router>
-            </SettingsProvider>
-        </MantineProvider>
+                        <Footer />
+                    </Router>
+                </SettingsProvider>
+            </MantineProvider>
+        </AuthProvider>
     );
 }
 
