@@ -1,2 +1,8 @@
+# Todo App
+
+## Description
+The application adopts a conventional to-do list format, facilitating task management with options to add, remove, and toggle tasks between completed and pending states. The List component oversees task presentation and pagination.
 # todo-app
-[URL](https://dynamic-pastelito-457f52.netlify.app/)
+
+
+[ Live URL](https://dynamic-pastelito-457f52.netlify.app/)
