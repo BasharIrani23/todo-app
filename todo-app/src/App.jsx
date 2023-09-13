@@ -12,7 +12,8 @@ import Auth from "./Components/Auth/index";
 
 // Context
 import { SettingsProvider } from "./Context/Setting/index";
-import { AuthProvider } from "./Context/Auth/index";
+
+import { AuthProvider } from "./Context/AuthContext/index";
 
 function App() {
     return (

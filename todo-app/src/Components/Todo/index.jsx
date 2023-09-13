@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
-import useForm from "../../hooks/form.js";
+import React, { useState, useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { SettingsContext } from "../../Context/Setting/index";
-
 import List from "../List/index.js";
-
+import useForm from "../../hooks/form";
 const InputField = ({ name, type, placeholder, value, onChange }) => (
     <label className="input-label">
         <span>{placeholder}</span>
@@ -19,14 +17,16 @@ const InputField = ({ name, type, placeholder, value, onChange }) => (
 );
 
 const Todo = () => {
-    const { list, setList, incomplete, setIncomplete } =
-        useContext(SettingsContext);
+    const { list, setList } = useContext(SettingsContext);
 
     const [defaultValues] = useState({
         difficulty: 4,
     });
 
-    const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
+    const { handleChange, handleSubmit, values } = useForm(
+        addItem,
+        defaultValues
+    );
 
     function addItem(item) {
         if (!item.text || !item.assignee) {
@@ -38,40 +38,11 @@ const Todo = () => {
         setList([...list, item]);
     }
 
-    function deleteItem(id) {
-        const items = list.filter((item) => item.id !== id);
-        setList(items);
-    }
-
-    function toggleComplete(id) {
-        const items = list.map((item) => {
-            if (item.id === id) {
-                item.complete = !item.complete;
-            }
-            return item;
-        });
-
-        setList(items);
-    }
-
-    useEffect(() => {
-        updateIncompleteCountAndTitle();
-    }, [list]);
-
-    const updateIncompleteCountAndTitle = () => {
-        let incompleteCount = list.filter((item) => !item.complete).length;
-        setIncomplete(incompleteCount);
-        document.title = `To Do List: ${incomplete}`;
-    };
-
     return (
         <div className="todo-container">
             <header data-testid="todo-header">
-                <h1 data-testid="todo-h1">
-                    To Do List: {incomplete} items pending
-                </h1>
+                <h1 data-testid="todo-h1">To Do List</h1>
             </header>
-
             <form onSubmit={handleSubmit} className="todo-form">
                 <h2>Add To Do Item</h2>
 
@@ -105,8 +76,7 @@ const Todo = () => {
                     <button type="submit">Add Item</button>
                 </div>
             </form>
-
-            <List list={list} toggleComplete={toggleComplete} />
+            <List list={list} />
         </div>
     );
 };

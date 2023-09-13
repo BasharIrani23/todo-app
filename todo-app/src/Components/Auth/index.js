@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../../Context/Auth/index";
+import { AuthContext } from "../../Context/AuthContext/index";
 
 const Auth = ({ capability, children }) => {
     const { can } = useContext(AuthContext);
