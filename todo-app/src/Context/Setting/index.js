@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createContext } from "react";
 
-// Create the context
 export const SettingsContext = createContext();
 
 export const SettingsProvider = (props) => {

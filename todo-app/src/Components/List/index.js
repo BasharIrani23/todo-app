@@ -1,30 +1,67 @@
 import React, { useContext } from "react";
 import { Pagination } from "@mantine/core";
 import { SettingsContext } from "../../Context/Setting/index";
-
+import { AuthContext } from "../../Context/AuthContext/index";
 import "./list.scss";
 
-const ListItem = ({ item, toggleComplete }) => (
-    <article className="list-item">
-        <p>{item.text}</p>
-        <p>
-            <small>Assigned to: {item.assignee}</small>
-        </p>
-        <p>
-            <small>Difficulty: {item.difficulty}</small>
-        </p>
-        <div
-            onClick={() => toggleComplete(item.id)}
-            className={item.complete ? "completed" : ""}
-        >
-            Complete: {item.complete.toString()}
-        </div>
-    </article>
-);
+const ListItem = ({ item, can }) => {
+    const { list, setList } = useContext(SettingsContext);
 
-export default function List({ list, toggleComplete }) {
-    const { itemsPerPage, hideCompleted, currentPage, setCurrentPage } =
+    const toggleComplete = (id) => {
+        if (can("update")) {
+            const updatedList = list.map((item) => {
+                if (item.id === id) {
+                    item.complete = !item.complete;
+                }
+                return item;
+            });
+            setList(updatedList);
+        } else {
+            console.log("You don't have permission to toggle complete.");
+        }
+    };
+
+    const deleteItem = (id) => {
+        if (can("delete")) {
+            const updatedList = list.filter((item) => item.id !== id);
+            setList(updatedList);
+        } else {
+            console.log("You don't have permission to delete.");
+        }
+    };
+
+    return (
+        <article className="list-item">
+            <p>{item.text}</p>
+            <p>
+                <small>Assigned to: {item.assignee}</small>
+            </p>
+            <p>
+                <small>Difficulty: {item.difficulty}</small>
+            </p>
+            <div
+                onClick={() => toggleComplete(item.id)}
+                className={item.complete ? "completed" : ""}
+            >
+                Complete: {item.complete.toString()}
+            </div>
+
+            {can("delete") && (
+                <button onClick={() => deleteItem(item.id)}>Delete</button>
+            )}
+        </article>
+    );
+};
+
+export default function List() {
+    const { itemsPerPage, hideCompleted, currentPage, setCurrentPage, list } =
         useContext(SettingsContext);
+    const { can } = useContext(AuthContext);
+
+    // Check for read permission
+    if (!can("read")) {
+        return <div>You do not have permission to view this list.</div>;
+    }
 
     const sortedList = list.sort((a, b) =>
         a.difficulty > b.difficulty ? 1 : -1
@@ -43,11 +80,7 @@ export default function List({ list, toggleComplete }) {
     return (
         <section className="list">
             {itemsToDisplay.map((item) => (
-                <ListItem
-                    key={item.id}
-                    item={item}
-                    toggleComplete={toggleComplete}
-                />
+                <ListItem key={item.id} item={item} can={can} />
             ))}
 
             {filteredList.length > itemsPerPage && (
