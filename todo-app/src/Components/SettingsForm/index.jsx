@@ -47,8 +47,6 @@ export default function SettingsForm() {
                             data-testid="items-per-page-input"
                         />
                     </div>
-
-                    {/* If you have other settings, add them below */}
                 </Card>
             </Grid.Col>
             <Grid.Col xs={12} sm={4}>
@@ -60,8 +58,6 @@ export default function SettingsForm() {
                         {hideCompleted ? "Hide" : "Show"} Completed ToDos
                     </Text>
                     <Text m="sm">Items Per page: {itemsPerPage}</Text>
-
-                    {/* Display other updated settings here */}
                 </Card>
             </Grid.Col>
         </Grid>

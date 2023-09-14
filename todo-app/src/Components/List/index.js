@@ -3,6 +3,7 @@ import { Pagination } from "@mantine/core";
 import { SettingsContext } from "../../Context/Setting/index";
 import { AuthContext } from "../../Context/AuthContext/index";
 import "./list.scss";
+import axios from "../../hooks/axios"; // Import axios with the updated base URL
 
 const ListItem = ({ item, can }) => {
     const { list, setList } = useContext(SettingsContext);
@@ -63,9 +64,10 @@ export default function List() {
         return <div>You do not have permission to view this list.</div>;
     }
 
-    const sortedList = list.sort((a, b) =>
-        a.difficulty > b.difficulty ? 1 : -1
-    );
+    // Ensure list is an array before sorting
+    const sortedList = Array.isArray(list)
+        ? list.sort((a, b) => (a.difficulty > b.difficulty ? 1 : -1))
+        : [];
     const filteredList = hideCompleted
         ? sortedList.filter((item) => !item.complete)
         : sortedList;
