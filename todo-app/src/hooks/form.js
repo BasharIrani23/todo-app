@@ -3,7 +3,6 @@ import { useEffect, useContext } from "react";
 import { SettingsContext } from "../Context/Setting/index";
 
 const useForm = (callback, defaultValues = {}) => {
-    // Replace 'sort' with 'sortField'
     const { setValues, values, sortField } = useContext(SettingsContext);
 
     const handleSubmit = (event) => {

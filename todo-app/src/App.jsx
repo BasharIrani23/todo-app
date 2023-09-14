@@ -8,6 +8,7 @@ import Todo from "./Components/Todo";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login/index";
+import Signup from "./Components/SignUp/Signup";
 import Auth from "./Components/Auth/index";
 
 // Context
@@ -32,6 +33,9 @@ function App() {
                             <Link style={linkStyle} to="/login">
                                 Login
                             </Link>
+                            <Link style={linkStyle} to="/signup">
+                                Sign Up
+                            </Link>
                         </nav>
 
                         <main style={mainContentStyle}>
@@ -46,6 +50,7 @@ function App() {
                                     }
                                 />
                                 <Route path="/login" element={<Login />} />
+                                <Route path="/signup" element={<Signup />} />
                             </Routes>
                         </main>
 
@@ -56,7 +61,6 @@ function App() {
         </AuthProvider>
     );
 }
-
 const navStyle = {
     display: "flex",
     justifyContent: "center",
