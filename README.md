@@ -8,7 +8,5 @@ The application adopts a conventional to-do list format, facilitating task manag
 [ Live URL](https://dynamic-pastelito-457f52.netlify.app/)
 ***
 [Pull Requests](https://github.com/BasharIrani23/todo-app/pulls)
-***
 
-[URL](https://dynamic-pastelito-457f52.netlify.app/)
 
